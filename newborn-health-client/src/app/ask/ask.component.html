@@ -1,0 +1,16 @@
+<p>ask works!</p>
+<div class="container">
+    <h1>Ask a Question</h1>
+    <form (ngSubmit)="ask()">
+      <div class="form-group">
+        <label for="question">Question:</label>
+        <input type="text" id="question" [(ngModel)]="question" name="question" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Ask</button>
+    </form>
+    <div *ngIf="response">
+      <h2>Response:</h2>
+      <p>{{ response }}</p>
+    </div>
+  </div>
+  
