@@ -8,6 +8,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from dotenv import load_dotenv  # Add this import
+from flask_cors import CORS  # Add this import
 
 # LangSmith
 import openai
@@ -18,6 +19,7 @@ load_dotenv()  # Add this line
 
 # Initialize Flask app
 app = Flask(__name__)
+CORS(app)  # Add this line to enable CORS
 
 # Set environment variables
 os.environ['LANGCHAIN_TRACING_V2'] = 'true'
