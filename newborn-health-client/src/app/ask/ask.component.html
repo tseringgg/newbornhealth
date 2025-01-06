@@ -1,16 +1,21 @@
 <p>ask works!</p>
 <div class="container">
     <h1>Ask a Question</h1>
-    <form (ngSubmit)="ask()">
+    <div *ngFor="let q of questions">
+      <div class="question-response">
+        <h2>Question:</h2>
+        <p>{{ q.question }}</p>
+        <div *ngIf="q.response">
+          <h2>Response:</h2>
+          <p>{{ q.response }}</p>
+        </div>
+      </div>
+    </div>
+    <form (ngSubmit)="addQuestion()" (keydown.enter)="addQuestion()">
       <div class="form-group">
-        <label for="question">Question:</label>
-        <input type="text" id="question" [(ngModel)]="question" name="question" class="form-control" required>
+        <label for="new-question">New Question:</label>
+        <input type="text" id="new-question" [(ngModel)]="newQuestion" name="newQuestion" class="form-control" required>
       </div>
       <button type="submit" class="btn btn-primary">Ask</button>
     </form>
-    <div *ngIf="response">
-      <h2>Response:</h2>
-      <p>{{ response }}</p>
-    </div>
-  </div>
-  
+</div>

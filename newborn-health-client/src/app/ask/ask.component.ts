@@ -12,17 +12,26 @@ import { HttpClientModule } from '@angular/common/http';
   styleUrl: './ask.component.scss'
 })
 export class AskComponent {
-  question: string = '';
-  response: string = '';
+  questions: { question: string, response: string }[] = [];
+  newQuestion: string = '';
 
   constructor(private dataService: DataService) { }
 
-  ask() {
-    if (this.question.trim()) {
-      this.dataService.askQuestion(this.question).subscribe(
-        data => this.response = data.response,
+  ask(q: { question: string, response: string }) {
+    if (q.question.trim()) {
+      this.dataService.askQuestion(q.question).subscribe(
+        data => q.response = data.response,
         error => console.error('Error:', error)
       );
+    }
+  }
+
+  addQuestion() {
+    if (this.newQuestion.trim()) {
+      const newQ = { question: this.newQuestion, response: '' };
+      this.questions.push(newQ);
+      this.ask(newQ);
+      this.newQuestion = '';
     }
   }
 }
