@@ -1,5 +1,6 @@
-<p>ask works!</p>
-<div class="container">
+
+<mat-card appearance="outlined">
+  <mat-card-content>
     <h1>Ask a Question</h1>
     <div *ngFor="let q of questions">
       <div class="question-response">
@@ -18,4 +19,5 @@
       </div>
       <button type="submit" class="btn btn-primary">Ask</button>
     </form>
-</div>
+</mat-card-content>
+</mat-card>

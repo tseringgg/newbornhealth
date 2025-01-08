@@ -8,7 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
   standalone: false,
   //imports: [RouterOutlet, AskComponent, HttpClientModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss'] // Corrected property name
 })
 export class AppComponent {
   title = 'newborn-health-client';
