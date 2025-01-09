@@ -1,0 +1,49 @@
+<p>learning works!</p>
+<!-- ...existing code... -->
+<mat-sidenav-container>
+    <mat-sidenav mode="side" opened>
+      <mat-accordion> <!-- Left column -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Topic 1
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-list>
+            <mat-list-item>Subtopic 1.1</mat-list-item>
+            <mat-list-item>Subtopic 1.2</mat-list-item>
+          </mat-list>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Topic 2
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-list>
+            <mat-list-item>Subtopic 2.1</mat-list-item>
+            <mat-list-item>Subtopic 2.2</mat-list-item>
+          </mat-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-sidenav>
+    <mat-sidenav-content style="height: 100vh;">
+      
+        <div style="display: flex; height: 100%;">
+          <div style="flex: 1; height: 100%; padding-left: 10px;">
+            <h1>Welcome to Newborn Health!</h1>
+            <p>Click on a topic to view its subtopics.</p>
+          </div>
+          <div style="flex: 0.5; height: 100%; padding-left: 10px;">
+            <app-ask></app-ask>
+          </div>
+        </div>
+  
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  
+  
+  <!-- Middle column goes here with sample text -->
+  
+  
+  <!-- ...existing code... -->

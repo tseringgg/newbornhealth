@@ -9,15 +9,25 @@ import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import {MatCardModule} from '@angular/material/card';
+import { HomeComponent } from './home/home.component';
+import { LearningComponent } from './learning/learning.component';
+import { AdminComponent } from './admin/admin.component';
+import { RouterModule } from '@angular/router';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AskComponent
+    AskComponent,
+    HomeComponent,
+    LearningComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    RouterModule,
+    AppRoutingModule,
     BrowserAnimationsModule, // Add BrowserAnimationsModule to imports
     MatListModule,
     MatExpansionModule,

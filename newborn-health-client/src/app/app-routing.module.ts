@@ -3,11 +3,22 @@ import { RouterModule, Routes } from "@angular/router";
 import { AppComponent } from "./app.component";
 import { AskComponent } from "./ask/ask.component";
 import { BrowserModule } from "@angular/platform-browser";
+import { HomeComponent } from "./home/home.component";
+import { AdminComponent } from "./admin/admin.component";
+import { LearningComponent } from "./learning/learning.component";
 
-const routes: Routes = [
+export const routes: Routes = [
     {
         path: '',
-        component: AppComponent
+        component: HomeComponent
+    },
+    {
+        path: 'learning',
+        component: LearningComponent
+    },
+    {
+        path: 'admin',
+        component: AdminComponent
     }
 ];
 
