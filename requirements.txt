@@ -27,7 +27,7 @@ cffi==1.17.1
 chardet==5.2.0
 charset-normalizer==3.3.2
 chroma-hnswlib==0.7.6
-chromadb==0.6.2
+chromadb==0.5.23
 click==8.1.7
 cloudevents==1.11.0
 colorama==0.4.6
@@ -107,6 +107,7 @@ jupyterlab_widgets==3.0.13
 kaitaistruct==0.10
 kubernetes==31.0.0
 langchain==0.3.14
+langchain-chroma==0.2.0
 langchain-community==0.3.14
 langchain-core==0.3.29
 langchain-openai==0.2.14

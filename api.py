@@ -3,7 +3,7 @@ import os
 from langchain import hub
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
@@ -29,12 +29,8 @@ os.environ['LANGCHAIN_PROJECT'] = 'pr-sparkling-sustainment-79'
 os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_API_KEY')
 os.environ['COHERE_API_KEY'] = os.getenv('COHERE_API_KEY')
 
-# Load and process the PDF document
-loader = PyPDFLoader("./Peds in Review Birth Injuries.pdf")
-docs = loader.load()
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-splits = text_splitter.split_documents(docs)
-vectorstore = Chroma.from_documents(documents=splits, embedding=OpenAIEmbeddings())
+
+vectorstore = Chroma(persist_directory="chroma_store", embedding_function=OpenAIEmbeddings())
 retriever = vectorstore.as_retriever()
 
 # Initialize LLM and prompt
