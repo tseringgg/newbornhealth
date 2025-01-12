@@ -29,8 +29,18 @@ vectorstore = Chroma(persist_directory="./chroma_store", embedding_function=embe
 # Load and process all PDFs in the directory
 for filename in os.listdir(pdf_directory):
     if filename.endswith(".pdf"):
+        print(f"Processing file: {filename}")  # Print the name of the file being processed
         loader = PyPDFLoader(os.path.join(pdf_directory, filename))
         docs = loader.load()
+        if not docs:
+            print(f"No documents found in file: {filename}")
+            continue
         splits = text_splitter.split_documents(docs)
+        if not splits:
+            print(f"No splits found for file: {filename}")
+            continue
         vectorstore.add_documents(documents=splits)
+
+
+
 
