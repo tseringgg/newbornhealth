@@ -1,23 +1,30 @@
-
-<mat-card appearance="outlined">
-  <mat-card-content>
-    <h1>Ask a Question</h1>
+<mat-card appearance="outlined" class="full-width-card">
+  <mat-card-content class="centered-content">
+    <h1>Ask Anything</h1>
     <div *ngFor="let q of questions">
       <div class="question-response">
-        <h2>Question:</h2>
-        <p>{{ q.question }}</p>
+        <h2>{{q.question}}</h2>
+        <!-- <p>{{ q.question }}</p> -->
         <div *ngIf="q.response">
-          <h2>Response:</h2>
+          <!-- <h2>Response:</h2> -->
           <p>{{ q.response }}</p>
+          <div *ngIf="q.relevantDocs && q.relevantDocs.length">
+            <h5>Sources:</h5>
+            <ul>
+              <li *ngFor="let doc of q.relevantDocs">
+                <a [href]="doc.metadata.source" target="_blank">{{ doc.metadata.source }}</a>
+                <span> Page {{ doc.metadata.page }}</span>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
     <form (ngSubmit)="addQuestion()" (keydown.enter)="addQuestion()">
-      <div class="form-group">
-        <label for="new-question">New Question:</label>
-        <input type="text" id="new-question" [(ngModel)]="newQuestion" name="newQuestion" class="form-control" required>
-      </div>
-      <button type="submit" class="btn btn-primary">Ask</button>
+      <mat-form-field class="example-full-width">
+        <!-- <mat-label>Ask anything</mat-label> -->
+        <input matInput placeholder="Ex. Common illnesses..." type="search" id="new-question" [(ngModel)]="newQuestion" name="newQuestion">
+      </mat-form-field>
     </form>
-</mat-card-content>
+  </mat-card-content>
 </mat-card>

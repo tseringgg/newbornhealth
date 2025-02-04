@@ -11,6 +11,7 @@ export class DataService {
   constructor(private http: HttpClient) { }
 
   askQuestion(question: string): Observable<any> {
-    return this.http.post<any>(this.apiUrl, { question });
+    let x = this.http.post<any>(this.apiUrl, { question });
+    return x;
   }
 }

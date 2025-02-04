@@ -1,0 +1,10 @@
+<button mat-button [matMenuTriggerFor]="pdfMenu">Select PDF</button>
+<mat-menu #pdfMenu="matMenu">
+  <button mat-menu-item *ngFor="let pdf of pdfFiles" >
+    {{ pdf }}
+  </button>
+</mat-menu>
+
+<ngx-extended-pdf-viewer [src]="'/src/assets/pdfs/GLUCOSE GEL (1).pdf'"></ngx-extended-pdf-viewer>
+<!-- <app-example-pdf-viewer></app-example-pdf-viewer> -->
+<p>pdf-viewer works!</p>

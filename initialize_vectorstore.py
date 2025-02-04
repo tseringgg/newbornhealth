@@ -25,6 +25,7 @@ embeddings = OpenAIEmbeddings()
 
 # Initialize Chroma vector store with persistent storage and embedding function
 vectorstore = Chroma(persist_directory="./chroma_store", embedding_function=embeddings)
+vectorstore.reset_collection()  # Reset the collection to remove any existing documents
 
 # Load and process all PDFs in the directory
 for filename in os.listdir(pdf_directory):

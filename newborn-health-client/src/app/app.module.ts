@@ -14,6 +14,8 @@ import { LearningComponent } from './learning/learning.component';
 import { AdminComponent } from './admin/admin.component';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
+import { PdfViewerComponent } from "./pdf-viewer/pdf-viewer.component";
+import {MatInputModule} from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -32,8 +34,10 @@ import { AppRoutingModule } from './app-routing.module';
     MatListModule,
     MatExpansionModule,
     MatSidenavModule,
-    MatCardModule
-  ],
+    MatCardModule,
+    MatInputModule,
+    PdfViewerComponent
+],
   providers: [provideHttpClient()],
   bootstrap: [AppComponent]
 })
