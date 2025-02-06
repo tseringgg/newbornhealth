@@ -57,4 +57,4 @@ jobs:
         app-name: ${{ secrets.AZURE_APP_NAME }}
         package: deployment/  # Deploy only the deployment folder
         slot-name: production
-        region: centralus
+        # region: centralus
