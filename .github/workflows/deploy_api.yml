@@ -6,7 +6,7 @@ on:
       - main
 
 permissions:
-  id-token: write  # Allow OIDC authentication
+  id-token: write  # Allows OIDC authentication
   contents: read
 
 jobs:
@@ -31,17 +31,23 @@ jobs:
         LANGCHAINAPIKEY=$(az keyvault secret show --name "LANGCHAINAPIKEY" --vault-name "${{ secrets.KEY_VAULT_NAME }}" --query value -o tsv)
         OPENAIAPIKEY=$(az keyvault secret show --name "OPENAIAPIKEY" --vault-name "${{ secrets.KEY_VAULT_NAME }}" --query value -o tsv)
 
-        # Write secrets to .env file
-        echo "COHEREAPIKEY=${COHEREAPIKEY}" >> .env
-        echo "LANGCHAINAPIKEY=${LANGCHAINAPIKEY}" >> .env
-        echo "OPENAIAPIKEY=${OPENAIAPIKEY}" >> .env
+        # Create a temporary deployment folder
+        mkdir deployment
 
-    - name: Verify .env File (Optional)
-      run: cat .env  # Remove this line in production
+        # Write secrets to .env file inside the deployment folder
+        echo "COHEREAPIKEY=${COHEREAPIKEY}" >> deployment/.env
+        echo "LANGCHAINAPIKEY=${LANGCHAINAPIKEY}" >> deployment/.env
+        echo "OPENAIAPIKEY=${OPENAIAPIKEY}" >> deployment/.env
+
+        # Copy only the api.py file to the deployment folder
+        cp ./newborn-health-api/api.py deployment/
+
+    - name: Verify Deployment Files (Optional)
+      run: ls -R deployment  # Shows which files will be deployed, remove this in production
 
     - name: Deploy Flask API to Azure App Service
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ secrets.AZURE_APP_NAME }}
-        package: .
+        package: deployment/  # Deploy only the deployment folder
         slot-name: production
