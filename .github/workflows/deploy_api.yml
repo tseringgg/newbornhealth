@@ -46,7 +46,7 @@ jobs:
       run: ls -R deployment  # Shows which files will be deployed, remove this in production
 
     - name: Deploy Flask API to Azure App Service
-      uses: Azure/static-web-apps-deploy@v1
+      uses: azure/webapps-deploy@v3
       with:
         app-name: ${{ secrets.AZURE_APP_NAME }}
         package: deployment/  # Deploy only the deployment folder
