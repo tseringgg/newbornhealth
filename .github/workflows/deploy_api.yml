@@ -45,9 +45,15 @@ jobs:
     - name: Verify Deployment Files (Optional)
       run: ls -R deployment  # Shows which files will be deployed, remove this in production
 
+    - name: Debug Azure Region
+      run: |
+        echo "Checking Azure App Service region..."
+        az webapp show --name ${{ secrets.AZURE_APP_NAME }} --query location -o tsv
+
     - name: Deploy Flask API to Azure App Service
       uses: azure/webapps-deploy@v3
       with:
         app-name: ${{ secrets.AZURE_APP_NAME }}
         package: deployment/  # Deploy only the deployment folder
         slot-name: production
+        region: centralus
