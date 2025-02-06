@@ -26,12 +26,18 @@ jobs:
 
     - name: Retrieve Secrets from Azure Key Vault
       run: |
-        API_KEY=$(az keyvault secret show --name API_KEY --vault-name ${{ secrets.KEY_VAULT_NAME }} --query value -o tsv)
+        # Fetch secrets from Key Vault
+        COHEREAPIKEY=$(az keyvault secret show --name "COHEREAPIKEY" --vault-name "${{ secrets.KEY_VAULT_NAME }}" --query value -o tsv)
+        LANGCHAINAPIKEY=$(az keyvault secret show --name "LANGCHAINAPIKEY" --vault-name "${{ secrets.KEY_VAULT_NAME }}" --query value -o tsv)
+        OPENAIAPIKEY=$(az keyvault secret show --name "OPENAIAPIKEY" --vault-name "${{ secrets.KEY_VAULT_NAME }}" --query value -o tsv)
 
-        echo "API_KEY=${API_KEY}" >> .env
+        # Write secrets to .env file
+        echo "COHEREAPIKEY=${COHEREAPIKEY}" >> .env
+        echo "LANGCHAINAPIKEY=${LANGCHAINAPIKEY}" >> .env
+        echo "OPENAIAPIKEY=${OPENAIAPIKEY}" >> .env
 
     - name: Verify .env File (Optional)
-      run: cat .env  # Remove in production
+      run: cat .env  # Remove this line in production
 
     - name: Deploy Flask API to Azure App Service
       uses: azure/webapps-deploy@v2
