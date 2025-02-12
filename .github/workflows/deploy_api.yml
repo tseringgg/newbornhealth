@@ -1,0 +1,60 @@
+name: Deploy Flask API with Key Vault
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write  # Allows OIDC authentication
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Login to Azure using OIDC
+      uses: azure/login@v1
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Retrieve Secrets from Azure Key Vault
+      run: |
+        # Fetch secrets from Key Vault
+        COHEREAPIKEY=$(az keyvault secret show --name "COHEREAPIKEY" --vault-name "${{ secrets.KEY_VAULT_NAME }}" --query value -o tsv)
+        LANGCHAINAPIKEY=$(az keyvault secret show --name "LANGCHAINAPIKEY" --vault-name "${{ secrets.KEY_VAULT_NAME }}" --query value -o tsv)
+        OPENAIAPIKEY=$(az keyvault secret show --name "OPENAIAPIKEY" --vault-name "${{ secrets.KEY_VAULT_NAME }}" --query value -o tsv)
+
+        # Create a temporary deployment folder
+        mkdir deployment
+
+        # Write secrets to .env file inside the deployment folder
+        echo "COHEREAPIKEY=${COHEREAPIKEY}" >> deployment/.env
+        echo "LANGCHAINAPIKEY=${LANGCHAINAPIKEY}" >> deployment/.env
+        echo "OPENAIAPIKEY=${OPENAIAPIKEY}" >> deployment/.env
+
+        # Copy only the api.py file to the deployment folder
+        cp ./newborn-health-api/api.py deployment/
+
+    - name: Verify Deployment Files (Optional)
+      run: ls -R deployment  # Shows which files will be deployed, remove this in production
+
+    - name: Debug Azure Region
+      run: |
+        echo "Checking Azure App Service region..."
+        az webapp show --name ${{ secrets.AZURE_APP_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --query location -o tsv
+
+
+    - name: Deploy Flask API to Azure App Service
+      uses: azure/webapps-deploy@v3
+      with:
+        app-name: ${{ secrets.AZURE_APP_NAME }}
+        package: deployment/  # Deploy only the deployment folder
+        slot-name: production
+        # region: centralus
