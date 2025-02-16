@@ -1,5 +1,4 @@
 import os
-import pinecone
 from dotenv import load_dotenv
 from PyPDF2 import PdfReader
 from PyPDF2.errors import DependencyError
@@ -29,7 +28,7 @@ if not any(index["name"] == INDEX_NAME for index in existing_indexes):
         region="us-east-1",
         embed={
             "model": "multilingual-e5-large",
-            "field_map": {"text": "chunk_text"}
+            "field_map": {"text": "chunk_text", "text": "file_name"}
         }
     )
 
@@ -55,7 +54,8 @@ for pdf_file in pdf_files:
     for i, chunk in enumerate(text_chunks):
         data_to_upsert.append({
             "id": f"{pdf_file.replace('.pdf', '')}_{i}",  # Use filename and chunk index as ID
-            "chunk_text": chunk  # Store text chunk for inference
+            "chunk_text": chunk,  # Store text chunk for inference
+            "file_name": pdf_file  # Store filename for reference
         })
 
 print(f"Extracted {len(data_to_upsert)} text chunks from {len(pdf_files)} PDFs.")
