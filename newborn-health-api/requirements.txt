@@ -1,0 +1,7 @@
+Flask
+flask-cors
+python-dotenv
+langchain-chroma
+langchain-core
+langchain-openai
+langsmith
