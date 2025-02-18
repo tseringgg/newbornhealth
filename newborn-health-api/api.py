@@ -27,11 +27,44 @@ os.environ['LANGCHAIN_TRACING_V2'] = 'true'
 os.environ['LANGCHAIN_ENDPOINT'] = 'https://api.smith.langchain.com'
 os.environ['LANGCHAIN_API_KEY'] = os.getenv('LANGCHAIN_API_KEY')
 os.environ['LANGCHAIN_PROJECT'] = 'pr-sparkling-sustainment-79'
-os.environ['OPENAI_API_KEY'] = os.getenv('OPENAI_API_KEY')
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 os.environ['COHERE_API_KEY'] = os.getenv('COHERE_API_KEY')
 
-vectorstore = Chroma(persist_directory="chroma_store", embedding_function=OpenAIEmbeddings())
-retriever = vectorstore.as_retriever(search_kwargs={"k": 3})  # Retrieve top 3 relevant documents
+
+from pinecone import Pinecone
+
+# Initialize Pinecone with API Key and Environment
+API_KEY = os.getenv('PINECONE_API_KEY')
+pc = Pinecone(api_key=API_KEY)
+
+# Define the Pinecone index name
+INDEX_NAME = os.getenv('PINECONE_INDEX_NAME')
+index = pc.Index(INDEX_NAME)
+print(index.describe_index_stats())
+
+
+# retriever = vectorstore.as_retriever(search_kwargs={"k": 3})  # Retrieve top 3 relevant documents
+
+retriever = RunnableLambda(
+    lambda user_input: index.search_records(
+        namespace=INDEX_NAME, 
+        query={
+            "inputs": {"text": user_input}, 
+            "top_k": 3
+        },
+        # rerank={
+        #     "model": "bge-reranker-v2-m3",
+        #     "top_n": 3,
+        #     "rank_fields": ["chunk_text"]
+        # },
+        fields=["id", "chunk_text", "file_name"]
+    )
+)
+
+# result = retriever.invoke("Disease prevention")
+# print(result)
+# vectorstore = Chroma(persist_directory="chroma_store", embedding_function=OpenAIEmbeddings())
+# retriever = vectorstore.as_retriever(search_kwargs={"k": 3})  # Retrieve top 3 relevant documents
 
 # Initialize LLM and prompt
 llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
@@ -51,25 +84,32 @@ def get_session_history(session_id):
     return store[session_id]
 
 
+
 retriever_chain = RunnableLambda(
     lambda inputs: retriever.invoke(inputs["input_user_message"])  # Pass only the query to the retriever
 )
-context = retriever_chain | (lambda docs: "\n\n".join(f"{doc.page_content} (Source: {doc.metadata.get('source', 'Unknown')})" for doc in docs) if docs else "No relevant context found.")
+# context = retriever_chain | (lambda docs: "\n\n".join(f"{doc.fields} (Source: {doc.metadata.get('source', 'Unknown')})" for doc in docs) if docs else "No relevant context found.")
+context = retriever | (lambda docs: "\n\n".join(doc['fields']['chunk_text'] for doc in docs['result']['hits']) if docs else "No relevant context found.")
+# print("Context:")
+# print(context.invoke("Disease prevention"))
 
 first_step = RunnablePassthrough.assign(context=lambda x: retriever.invoke(x["input_user_message"]))
 
 runnable = RunnableParallel(
     response=
     {"input_user_message": RunnablePassthrough(), 
-     "context":(lambda docs: "\n\n".join(f"{doc.page_content})" for doc in docs["context"]) if docs else "No relevant context found.")}
+     "context":(lambda docs: "\n\n".join(doc['fields']['chunk_text'] for doc in docs['context']['result']['hits']) if docs else "No relevant context found.")}
     | prompt | llm | StrOutputParser(),
     relevant_docs=lambda x: [
-        {"id": doc.id, "metadata": doc.metadata}
-        for doc in x["context"]
+        {"id": doc['_id'], "metadata": doc['fields']['file_name']}
+        for doc in x['context']['result']['hits']
+        # for doc in x["context"]
     ]
 )
 rag_chain = first_step | runnable
 
+# print(retriever.invoke("Common illness"))
+# print(rag_chain.invoke({"input_user_message": "Common illness"}))
 
 chain_with_message_history = RunnableWithMessageHistory(
     rag_chain,
