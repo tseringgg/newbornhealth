@@ -1,5 +1,6 @@
 # Ignore the chroma_store folder in the newborn-health-api folder
 newborn-health-api/chroma_store/
+newborn-health-api/.venv/
 
 # Ignore the .env file
 .env
