@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify
+from flask import (Flask, redirect, render_template, request,
+                   send_from_directory, url_for, jsonify)
 import os
 from langchain_chroma import Chroma
 from langchain_core.output_parsers import StrOutputParser
@@ -121,9 +122,24 @@ chain_with_message_history = RunnableWithMessageHistory(
 # print(first_step.invoke({"input_user_message": "What is the capital of France?"}))
 # print(rag_chain.invoke({"input_user_message": "What is the capital of France?"}))
 
+@app.route('/')
+def index():
+   print('Request for index page received')
+   return render_template('index.html')
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+
 @traceable
 @app.route('/ask', methods=['POST'])
 def ask():
+    name = request.form.get('name')
+
+    
+
     data = request.json
     question = data.get('question')
     if not question:
@@ -142,6 +158,12 @@ def ask():
     )
 
     # response = chain_with_message_history.invoke(question, config={"configurable": {"session_id": "1"}})
+    if name:
+        print('Request for hello page received with name=%s' % name)
+        return render_template('hello.html', name = name)
+    else:
+        print('Request for hello page received with no name or blank name -- redirecting')
+        return redirect(url_for('index'))
 
     # Debugging: Print the response
     print(f"Response: {response}")
