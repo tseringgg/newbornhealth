@@ -52,8 +52,11 @@ jobs:
           python -m venv venv
           source venv/bin/activate
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+      - name: Install dependencies (Exclude pywin32 on Linux)
+        run: |
+          sed -i '/pywin32/d' newborn-health-api/api/requirements.txt
+          pip install -r newborn-health-api/api/requirements.txt
+
 
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
