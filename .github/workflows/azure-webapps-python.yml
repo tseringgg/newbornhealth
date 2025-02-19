@@ -84,8 +84,8 @@ jobs:
           name: python-app
           path: .
           
-      - name: Zip the API folder
-        run: zip -r deployment.zip newborn-health-api/api
+      # - name: Zip the API folder
+      #   run: zip -r deployment.zip newborn-health-api/api
         
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
