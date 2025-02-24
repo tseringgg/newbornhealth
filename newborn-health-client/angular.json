@@ -27,18 +27,14 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets",
-              {
-                "glob": "**/*",
-                "input": "node_modules/ngx-extended-pdf-viewer/assets/",
-                "output": "/assets/"
-              }
+              "src/assets"
             ],
             "styles": [
               "src/styles.scss"
             ],
             "scripts": [
-            ]
+            ],
+            "statsJson": true
           },
           "configurations": {
             "production": {

@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
 import { DataService } from '../data.service';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-ask',
-  standalone: false,
-  //imports: [FormsModule, CommonModule, HttpClientModule],
+  standalone: true,
+  imports: [FormsModule, CommonModule, HttpClientModule, MatCardModule, MatInputModule,],
   templateUrl: './ask.component.html',
   styleUrl: './ask.component.scss'
 })
