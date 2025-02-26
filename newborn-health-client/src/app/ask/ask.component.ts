@@ -25,7 +25,7 @@ export class AskComponent {
         data => {
           q.response = data.response;
             q.relevantDocs = data.relevant_docs.map((doc: any) => {
-            doc.metadata.source = '/assets/' + doc.metadata.source;
+            // doc.metadata.source = '/assets/' + doc.metadata.source;
             return doc;
             });
         },

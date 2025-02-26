@@ -12,7 +12,7 @@
             <h5>Sources:</h5>
             <ul>
               <li *ngFor="let doc of q.relevantDocs">
-                <a [href]="doc.metadata.source" target="_blank">{{ doc.metadata.source }}</a>
+                <a [href]="doc.metadata.url" target="_blank">{{ doc.metadata.source }}</a>
                 <span> Page {{ doc.metadata.page }}</span>
               </li>
             </ul>
