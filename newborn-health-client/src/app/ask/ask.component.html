@@ -9,12 +9,18 @@
           <!-- <h2>Response:</h2> -->
           <p>{{ q.response }}</p>
           <div *ngIf="q.relevantDocs && q.relevantDocs.length">
-            <h5>Sources:</h5>
-            <ul>
-              <li *ngFor="let doc of q.relevantDocs">
-                <a [href]="doc.metadata.url" target="_blank">{{ doc.metadata.source }}</a>
-                <span> Page {{ doc.metadata.page }}</span>
-              </li>
+            <div *ngIf="q.showSourcesHeader">
+              <strong>Relevant Sources:</strong>
+              <!-- <h5>Relevant Sources:</h5> -->
+            </div>
+            <ul *ngIf="q.showSourcesHeader">
+              <ng-container *ngFor="let doc of q.relevantDocs; let i = index">
+                <li *ngIf="q.shownBulletPoints[i]">
+                  <a href="{{ doc.metadata.url }}" target="_blank">
+                    <span [innerHTML]="q.animatedSources[i].replace('█', '<span class=\'blinking-cursor\'>█</span>')"></span>
+                  </a>
+                </li>
+              </ng-container>
             </ul>
           </div>
         </div>
