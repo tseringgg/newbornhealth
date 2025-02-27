@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { DataService } from '../data.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -14,18 +14,33 @@ import { ChatbotService } from '../chatbot.service';
   templateUrl: './ask.component.html',
   styleUrl: './ask.component.scss'
 })
-export class AskComponent {
+export class AskComponent implements AfterViewChecked {
+  @ViewChild('messageContainer') messageContainer!: ElementRef; // Reference to the message container
+
   questions: { 
     question: string, 
     response: string, 
     relevantDocs: any[], 
     animatedSources: string[], 
-    shownBulletPoints: boolean[],  // Controls when each bullet point appears
-    showSourcesHeader: boolean 
+    shownBulletPoints: boolean[],  
+    showSourcesHeader: boolean,
+    isThinking: boolean,
+    responseComplete: boolean,
+    showPlaceholder: boolean, // NEW: Controls extra whitespace
+    placeholderHeight: number
   }[] = [];
+  
   newQuestion: string = '';
+  private shouldScroll: boolean = false; // Tracks when to scroll
 
   constructor(private dataService: DataService, private chatbotService: ChatbotService) {}
+
+  ngAfterViewChecked() {
+    if (this.shouldScroll) {
+      this.scrollToLatestQuestion();
+      this.shouldScroll = false;
+    }
+  }
 
   ask(q: { 
     question: string, 
@@ -33,56 +48,85 @@ export class AskComponent {
     relevantDocs: any[], 
     animatedSources: string[], 
     shownBulletPoints: boolean[],
-    showSourcesHeader: boolean 
+    showSourcesHeader: boolean, 
+    isThinking: boolean, 
+    responseComplete: boolean,
+    showPlaceholder: boolean,
+    placeholderHeight: number
   }) {
     if (!q.question.trim()) return;
-
-    // Reset response, sources, and visibility flags
+  
+    // Reset response state
     q.response = '';
     q.animatedSources = [];
     q.shownBulletPoints = []; 
     q.showSourcesHeader = false; 
-
+    q.isThinking = true; 
+    q.responseComplete = false;
+    q.showPlaceholder = true; // Keep whitespace static
+  
+    // this.questions.push({ ...q, placeholderHeight: 500 });
+    this.questions.push(q);
+    this.shouldScroll = true;
+  
     this.dataService.askQuestion(q.question).subscribe(
       data => {
         const fullResponse = data.response;
         console.log(fullResponse);
-
-        // Store relevant docs
+  
         q.relevantDocs = data.relevant_docs;
-        q.shownBulletPoints = Array(q.relevantDocs.length).fill(false); // Initially, hide all bullet points
-
-        // Animate response first
+        q.shownBulletPoints = Array(q.relevantDocs.length).fill(false);
+  
+        // Start animating response
         this.chatbotService.displayMessageWordByWord(fullResponse).subscribe({
           next: text => {
             q.response = text;
           },
           complete: () => {
-            console.log("Bot response complete. Now showing 'Relevant Sources'...");
-            this.showSources(q); // Show header first, then animate sources
+            q.isThinking = false;
+            q.responseComplete = true;
+            this.showSources(q);
           }
         });
       },
-      error => console.error('Error:', error)
+      error => {
+        console.error('Error:', error);
+        q.isThinking = false;
+      }
     );
   }
-
-  showSources(q: { relevantDocs: any[], animatedSources: string[], shownBulletPoints: boolean[], showSourcesHeader: boolean }) {
-    q.showSourcesHeader = true; // Show "Relevant Sources" header after response completes
-
+  
+  showSources(q: { relevantDocs: any[], animatedSources: string[], shownBulletPoints: boolean[], showSourcesHeader: boolean, showPlaceholder: boolean }) {
+    q.showSourcesHeader = true;
+  
     q.relevantDocs.forEach((doc, index) => {
       setTimeout(() => {
-        q.shownBulletPoints[index] = true; // Show the bullet point
-        q.animatedSources[index] = ''; // Start with an empty string
-
+        q.shownBulletPoints[index] = true;
+        q.animatedSources[index] = '';
+  
         this.chatbotService.displayMessageWordByWord(doc.metadata.source).subscribe({
           next: text => {
             q.animatedSources[index] = text;
+          },
+          complete: () => {
+            console.log(`Source ${index + 1} complete.`);
+            if (index === q.relevantDocs.length - 1) {
+              q.showPlaceholder = false; // Whitespace remains, but input will now appear
+            }
           }
         });
-      }, index * 1000); // Delay each bullet point and source animation by 1 second
+      }, index * 500);
     });
   }
+  
+  /** Controls when the input form should appear */
+  shouldShowInput(): boolean {
+    if (this.questions.length === 0) return true; // Show input if no questions exist
+    const lastQ = this.questions[this.questions.length - 1];
+    return lastQ.responseComplete && !lastQ.showPlaceholder; // Only show after response & sources are done
+  }
+  
+  
 
   addQuestion() {
     if (this.newQuestion.trim()) {
@@ -92,11 +136,33 @@ export class AskComponent {
         relevantDocs: [], 
         animatedSources: [], 
         shownBulletPoints: [],
-        showSourcesHeader: false 
+        showSourcesHeader: false, 
+        isThinking: false, 
+        responseComplete: false,
+        showPlaceholder: true, // Added
+        placeholderHeight: 500 // Initial placeholder height
       };
-      this.questions.push(newQ);
       this.ask(newQ);
       this.newQuestion = '';
     }
   }
+
+  private scrollToLatestQuestion() {
+    setTimeout(() => {
+      if (this.messageContainer) {
+        const messageElements = this.messageContainer.nativeElement.children;
+        if (messageElements.length > 0) {
+          const latestMessage = messageElements[messageElements.length - 1];
+  
+          // Scroll with an offset to compensate for the header
+          const OFFSET = 140; // Adjust based on header height
+          const targetPosition = latestMessage.getBoundingClientRect().top + window.scrollY - OFFSET;
+  
+          window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+        }
+      }
+    }, 150); // Small delay to ensure DOM updates
+  }
+  
+  
 }

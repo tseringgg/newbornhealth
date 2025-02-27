@@ -10,7 +10,7 @@ import { LearningComponent } from "./learning/learning.component";
 export const routes: Routes = [
     {
         path: '',
-        component: HomeComponent
+        component: AskComponent
     },
     {
         path: 'learning',

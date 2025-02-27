@@ -1,43 +1,50 @@
 <mat-card appearance="outlined" class="full-width-card">
   <mat-card-content class="centered-content">
-    <h1 class="centered-text">Ask Anything</h1> <!-- Added class for centering -->
-    
-    <div *ngFor="let q of questions">
-      <div class="question-response">
-        <h2>{{ q.question }}</h2>
-        <p>
-          <span *ngIf="!q.response" class="typing-dots">
-            <span>.</span>
-            <span>.</span>
-            <span>.</span>
-          </span>
-        </p>
+    <h1 class="centered-text">Ask Anything</h1>
 
-        <div *ngIf="q.response">
-          <p>{{ q.response }}</p>
-          <div *ngIf="q.relevantDocs && q.relevantDocs.length">
-            <div *ngIf="q.showSourcesHeader">
-              <strong>Relevant Sources:</strong>
+    <div #messageContainer class="message-container">
+      <div *ngFor="let q of questions">
+        <div class="question-response">
+          <h2 class="user-message">{{ q.question }}</h2>
+          <p>
+            <span *ngIf="!q.response" class="typing-dots">
+              <span>.</span>
+              <span>.</span>
+              <span>.</span>
+            </span>
+          </p>
+
+          <div *ngIf="q.response">
+            <p>{{ q.response }}</p>
+            <div *ngIf="q.relevantDocs && q.relevantDocs.length">
+              <div *ngIf="q.showSourcesHeader">
+                <strong>Relevant Sources:</strong>
+              </div>
+              <ul *ngIf="q.showSourcesHeader" class="sources-list">
+                <ng-container *ngFor="let doc of q.relevantDocs; let i = index">
+                  <li *ngIf="q.shownBulletPoints[i]">
+                    <a href="{{ doc.metadata.url }}" target="_blank">
+                      <span [innerHTML]="q.animatedSources[i].replace('█', '<span class=\'blinking-cursor\'>█</span>')"></span>
+                    </a>
+                  </li>
+                </ng-container>
+              </ul>
             </div>
-            <ul *ngIf="q.showSourcesHeader">
-              <ng-container *ngFor="let doc of q.relevantDocs; let i = index">
-                <li *ngIf="q.shownBulletPoints[i]">
-                  <a href="{{ doc.metadata.url }}" target="_blank">
-                    <span [innerHTML]="q.animatedSources[i].replace('█', '<span class=\'blinking-cursor\'>█</span>')"></span>
-                  </a>
-                </li>
-              </ng-container>
-            </ul>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Added centering class to the form -->
-    <form class="centered-form" (ngSubmit)="addQuestion()" (keydown.enter)="addQuestion()">
-      <mat-form-field class="example-full-width">
-        <input matInput placeholder="Ex. Common illnesses..." type="search" id="new-question" [(ngModel)]="newQuestion" name="newQuestion">
-      </mat-form-field>
-    </form>
+      <!-- Input Form (Hidden Until Response & Sources Are Done) -->
+      <div *ngIf="shouldShowInput()" class="input-wrapper">
+        <form class="centered-form" (ngSubmit)="addQuestion()" (keydown.enter)="addQuestion()">
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Ex. Common illnesses..." type="search" id="new-question" [(ngModel)]="newQuestion" name="newQuestion">
+          </mat-form-field>
+        </form>
+      </div>
+
+      <!-- Static Placeholder for Whitespace -->
+      <div class="placeholder-space"></div>
+    </div>
   </mat-card-content>
 </mat-card>

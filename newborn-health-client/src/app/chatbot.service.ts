@@ -6,7 +6,7 @@ import { takeWhile } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class ChatbotService {
-  displayMessageWordByWord(fullMessage: string, delay: number = 100): Observable<string> {
+  displayMessageWordByWord(fullMessage: string, delay: number = 30): Observable<string> {
     return new Observable<string>(observer => {
       let words = fullMessage.split(' ');
       let currentIndex = 0;
@@ -29,7 +29,7 @@ export class ChatbotService {
     });
   }
 
-  displaySourceWordByWord(source: string, delay: number = 100): Observable<string> {
+  displaySourceWordByWord(source: string, delay: number = 20): Observable<string> {
     return new Observable<string>(observer => {
       let words = source.split(' ');
       let currentIndex = 0;

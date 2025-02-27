@@ -67,5 +67,33 @@
     justify-content: center;
     margin-top: 20px; /* Optional: Adds spacing above the input field */
   }
+  .message-container {
+    max-height: none; /* Remove height constraint */
+    overflow: visible; /* Allow content to grow naturally */
+  }
+  .placeholder-space {
+    height: 800px; /* Keeps extra whitespace static */
+    visibility: hidden;
+  }
   
+  .input-wrapper {
+    padding-top: 30px; /* Adds space between responses and input */
+    display: flex;
+    justify-content: center;
+  }
+
+  .sources-list {
+    padding-bottom: 30px; /* Adjust as needed */
+  }
+
+  .user-message {
+    padding-top: 20px; /* Adds space between responses and input */
+    padding-bottom: 20px; /* Adds space between responses and input */
+  }
+  
+  
+  
+  
+    
+    
   
