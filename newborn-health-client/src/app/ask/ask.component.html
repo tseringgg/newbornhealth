@@ -1,17 +1,23 @@
 <mat-card appearance="outlined" class="full-width-card">
   <mat-card-content class="centered-content">
-    <h1>Ask Anything</h1>
+    <h1 class="centered-text">Ask Anything</h1> <!-- Added class for centering -->
+    
     <div *ngFor="let q of questions">
       <div class="question-response">
-        <h2>{{q.question}}</h2>
-        <!-- <p>{{ q.question }}</p> -->
+        <h2>{{ q.question }}</h2>
+        <p>
+          <span *ngIf="!q.response" class="typing-dots">
+            <span>.</span>
+            <span>.</span>
+            <span>.</span>
+          </span>
+        </p>
+
         <div *ngIf="q.response">
-          <!-- <h2>Response:</h2> -->
           <p>{{ q.response }}</p>
           <div *ngIf="q.relevantDocs && q.relevantDocs.length">
             <div *ngIf="q.showSourcesHeader">
               <strong>Relevant Sources:</strong>
-              <!-- <h5>Relevant Sources:</h5> -->
             </div>
             <ul *ngIf="q.showSourcesHeader">
               <ng-container *ngFor="let doc of q.relevantDocs; let i = index">
@@ -26,9 +32,10 @@
         </div>
       </div>
     </div>
-    <form (ngSubmit)="addQuestion()" (keydown.enter)="addQuestion()">
+
+    <!-- Added centering class to the form -->
+    <form class="centered-form" (ngSubmit)="addQuestion()" (keydown.enter)="addQuestion()">
       <mat-form-field class="example-full-width">
-        <!-- <mat-label>Ask anything</mat-label> -->
         <input matInput placeholder="Ex. Common illnesses..." type="search" id="new-question" [(ngModel)]="newQuestion" name="newQuestion">
       </mat-form-field>
     </form>
