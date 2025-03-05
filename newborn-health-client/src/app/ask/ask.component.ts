@@ -98,20 +98,23 @@ export class AskComponent implements AfterViewChecked {
   
   showSources(q: { relevantDocs: any[], animatedSources: string[], shownBulletPoints: boolean[], showSourcesHeader: boolean, showPlaceholder: boolean }) {
     q.showSourcesHeader = true;
-  
+
     q.relevantDocs.forEach((doc, index) => {
       setTimeout(() => {
         q.shownBulletPoints[index] = true;
-        q.animatedSources[index] = '';
-  
-        this.chatbotService.displayMessageWordByWord(doc.metadata.source).subscribe({
+        q.animatedSources[index] = ''; // Reset for each doc
+
+        // Format the Source Text with Page Number
+        const sourceText = `${doc.metadata.source}, Page ${doc.metadata.page_number}`;
+
+        this.chatbotService.displayMessageWordByWord(sourceText).subscribe({
           next: text => {
             q.animatedSources[index] = text;
           },
           complete: () => {
             console.log(`Source ${index + 1} complete.`);
             if (index === q.relevantDocs.length - 1) {
-              q.showPlaceholder = false; // Whitespace remains, but input will now appear
+              q.showPlaceholder = false;
             }
           }
         });
