@@ -1,4 +1,16 @@
-<mat-card appearance="outlined" class="full-width-card">
+<!-- my-component.component.html -->
+<!-- app.component.html -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+rel="stylesheet">
+<!-- <span class="material-icons">&#xE87C;</span> -->
+<div style="padding: 16px;">
+  <mat-slide-toggle 
+    (change)="themeService.toggleTheme()" 
+    [checked]="themeService.isDarkMode" 
+    class="dark-mode-toggle"
+    color="var(--primary-color)"><span class="toggle-label">Dark Mode</span></mat-slide-toggle>
+</div>
+<mat-card appearance="outlined" class="ask-component full-width-card">
   <mat-card-content class="centered-content">
     <h1 class="centered-text">Ask Anything</h1>
 

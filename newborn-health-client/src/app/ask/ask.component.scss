@@ -50,7 +50,8 @@
     display: inline-block;
     font-size: 28px;
     font-weight: bold;
-    color: black;
+    // color: black;
+    color: var(--text-color);
     animation: typing 1.5s infinite ease-in-out;
   }
   
@@ -92,8 +93,50 @@
   }
   
   
+  /* my-component.component.scss */
+.ask-component {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  // border: 1px solid var(--primary-color);
+  padding: 16px;
+}
   
-  
+
+/* my-component.component.scss */
+
+.dark-mode-toggle {
+  color: var(--text-color) !important; /* Apply text color from CSS variable */
+}
+
+.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+    background-color: var(--secondary-color) !important;
+}
+
+.mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+    background-color: var(--primary-color) !important;
+}
+
+/* my-component.component.scss */
+
+.mat-slide-toggle {
+  display: flex; /* Arrange icon and text horizontally */
+  align-items: center; /* Vertically center the content */
+}
+
+.mat-slide-toggle .mat-slide-toggle-content {
+  margin-left: 8px; /* Add some space between the icon and the label */
+}
+
+.light-mode-icon,
+.dark-mode-icon {
+  color: var(--text-color); /* Use the CSS variable for text color */
+  margin-right: 4px; /* Add a little space after the icon */
+  font-size: 20px; /* Adjust icon size as needed */
+}
+
+span.toggle-label {
+    color: var(--text-color);
+}
     
     
   

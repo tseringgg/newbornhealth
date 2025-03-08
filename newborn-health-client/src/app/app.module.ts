@@ -7,11 +7,13 @@ import { provideHttpClient } from '@angular/common/http';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
 import { HomeComponent } from './home/home.component';
 import { LearningComponent } from './learning/learning.component';
 import { AdminComponent } from './admin/admin.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
+import { ThemeService } from './theme.service';
 
 @NgModule({
   declarations: [
@@ -31,9 +33,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatListModule,
     MatExpansionModule,
     MatSidenavModule,
+    MatIconModule,
     
 ],
-  providers: [provideHttpClient()],
+  providers: [provideHttpClient(), ThemeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

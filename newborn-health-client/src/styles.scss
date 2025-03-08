@@ -3,7 +3,36 @@
 
 
 
+// body {
+//     font-family: sans-serif;
+//     background-color: #f0f0f0;
+//   }
+
+  /* styles.scss */
+:root {
+  --background-color: #ffffff;  /* Light mode background */
+  --text-color: #000000;      /* Light mode text */
+  --primary-color: #007bff;   /* Light mode primary color */
+  --secondary-color: #6c757d; /* Light mode secondary color */
+}
+
 body {
-    font-family: sans-serif;
-    background-color: #f0f0f0;
-  }
+  font-family: Geneva, Verdana, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+/* Dark mode */
+body.dark-theme {
+  --background-color: #242424;  /* Dark mode background */
+  --text-color: #e4e4e4;      /* Dark mode text */
+  --primary-color: #00aaff;   /* Dark mode primary color */
+  --secondary-color: #999999; /* Dark mode secondary color */
+}
+
+/* Example usage in a component */
+.my-component {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: 1px solid var(--primary-color);
+}

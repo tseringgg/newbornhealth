@@ -6,11 +6,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { ChatbotService } from '../chatbot.service';
+import { ThemeService } from '../theme.service';
+import { MatIconModule } from '@angular/material/icon';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+
 
 @Component({
   selector: 'app-ask',
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule, MatCardModule, MatInputModule],
+  imports: [FormsModule, CommonModule, HttpClientModule, MatCardModule, MatInputModule, MatIconModule, MatSlideToggleModule],
+  providers: [ThemeService],
   templateUrl: './ask.component.html',
   styleUrl: './ask.component.scss'
 })
@@ -33,7 +38,7 @@ export class AskComponent implements AfterViewChecked {
   newQuestion: string = '';
   private shouldScroll: boolean = false; // Tracks when to scroll
 
-  constructor(private dataService: DataService, private chatbotService: ChatbotService) {}
+  constructor(private dataService: DataService, private chatbotService: ChatbotService, public themeService: ThemeService) {}
 
   ngAfterViewChecked() {
     if (this.shouldScroll) {
