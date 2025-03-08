@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ThemeService {
-  private isDarkTheme = false;
+  private isDarkTheme = true;
 
   constructor() {
     // Load theme from localStorage on initialization

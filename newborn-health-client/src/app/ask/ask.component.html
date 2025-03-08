@@ -27,7 +27,9 @@ rel="stylesheet">
           </p>
 
           <div *ngIf="q.response">
-            <p>{{ q.response }}</p>
+            <!-- <p>{{ q.response }}</p> -->
+            <!-- my-component.component.html -->
+            <markdown [data]="q.response"></markdown>
             <div *ngIf="q.relevantDocs && q.relevantDocs.length">
               <div *ngIf="q.showSourcesHeader">
                 <strong>Relevant Sources:</strong>
@@ -35,7 +37,7 @@ rel="stylesheet">
               <ul *ngIf="q.showSourcesHeader" class="sources-list">
                 <ng-container *ngFor="let doc of q.relevantDocs; let i = index">
                   <li *ngIf="q.shownBulletPoints[i]">
-                    <a href="{{ doc.metadata.url }}#page={{ doc.metadata.page_number }}" target="_blank">
+                    <a href="{{ doc.metadata.url }}#page={{ doc.metadata.page_number }}" target="_blank" class="source-link">
                       <span [innerHTML]="q.animatedSources[i].replace('█', '<span class=\'blinking-cursor\'>█</span>')"></span>
                     </a>
                   </li>

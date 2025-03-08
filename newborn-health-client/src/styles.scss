@@ -36,3 +36,12 @@ body.dark-theme {
   color: var(--text-color);
   border: 1px solid var(--primary-color);
 }
+
+/* Style for all links on all pages */
+.source-link {
+  color: darkblue; /* Default light mode color */
+}
+
+body.dark-theme .source-link {
+  color: lightblue; /* Dark mode color */
+}

@@ -14,6 +14,7 @@ import { AdminComponent } from './admin/admin.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 import { ThemeService } from './theme.service';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   declarations: [
@@ -25,15 +26,16 @@ import { ThemeService } from './theme.service';
     // AskComponent
   ],
   imports: [
-    // BrowserModule,
-    // FormsModule,
+    BrowserModule,
+    FormsModule,
     // RouterModule,
-    // AppRoutingModule,
-    // BrowserAnimationsModule, // Add BrowserAnimationsModule to imports
+    AppRoutingModule,
+    BrowserAnimationsModule, // Add BrowserAnimationsModule to imports
     MatListModule,
     MatExpansionModule,
     MatSidenavModule,
     MatIconModule,
+    MarkdownModule.forRoot(),
     
 ],
   providers: [provideHttpClient(), ThemeService],

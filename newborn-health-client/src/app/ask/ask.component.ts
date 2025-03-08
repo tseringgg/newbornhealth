@@ -9,12 +9,13 @@ import { ChatbotService } from '../chatbot.service';
 import { ThemeService } from '../theme.service';
 import { MatIconModule } from '@angular/material/icon';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MarkdownModule } from 'ngx-markdown';
 
 
 @Component({
     selector: 'app-ask',
     standalone: true,
-    imports: [ FormsModule, CommonModule, HttpClientModule, MatCardModule, MatInputModule, MatIconModule, MatSlideToggleModule],
+    imports: [ FormsModule, CommonModule, HttpClientModule, MatCardModule, MatInputModule, MatIconModule, MatSlideToggleModule, MarkdownModule ],
     providers: [ThemeService],
     templateUrl: './ask.component.html',
     styleUrl: './ask.component.scss'
