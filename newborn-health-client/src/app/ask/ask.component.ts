@@ -12,12 +12,12 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 
 @Component({
-  selector: 'app-ask',
-  standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule, MatCardModule, MatInputModule, MatIconModule, MatSlideToggleModule],
-  providers: [ThemeService],
-  templateUrl: './ask.component.html',
-  styleUrl: './ask.component.scss'
+    selector: 'app-ask',
+    standalone: true,
+    imports: [ FormsModule, CommonModule, HttpClientModule, MatCardModule, MatInputModule, MatIconModule, MatSlideToggleModule],
+    providers: [ThemeService],
+    templateUrl: './ask.component.html',
+    styleUrl: './ask.component.scss'
 })
 export class AskComponent implements AfterViewChecked {
   @ViewChild('messageContainer') messageContainer!: ElementRef; // Reference to the message container

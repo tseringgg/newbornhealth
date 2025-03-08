@@ -21,15 +21,15 @@ import { ThemeService } from './theme.service';
     
     HomeComponent,
     LearningComponent,
-    AdminComponent
+    AdminComponent,
+    // AskComponent
   ],
   imports: [
-    BrowserModule,
-    FormsModule,
-    AskComponent,
+    // BrowserModule,
+    // FormsModule,
     // RouterModule,
-    AppRoutingModule,
-    BrowserAnimationsModule, // Add BrowserAnimationsModule to imports
+    // AppRoutingModule,
+    // BrowserAnimationsModule, // Add BrowserAnimationsModule to imports
     MatListModule,
     MatExpansionModule,
     MatSidenavModule,
